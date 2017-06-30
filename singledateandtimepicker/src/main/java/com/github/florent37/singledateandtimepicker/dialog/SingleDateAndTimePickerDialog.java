@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +19,15 @@ import java.util.Date;
 public class SingleDateAndTimePickerDialog extends BaseDialog {
 
     private Listener listener;
+
+    private OnButtonClickListener mOnPositiveButtonClickListener;
+    private CharSequence mPositiveText;
+
+    private OnButtonClickListener mOnNegativeButtonClickListener;
+    private CharSequence mNegativeText;
+
+    private int buttonStyleResId;
+
     private BottomSheetHelper bottomSheetHelper;
     private SingleDateAndTimePicker picker;
 
@@ -58,16 +68,62 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
 
         final TextView buttonOk = (TextView) view.findViewById(R.id.buttonOk);
         if (buttonOk != null) {
-            buttonOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    okClicked = true;
-                    close();
-                }
-            });
+            if (mPositiveText == null && mOnPositiveButtonClickListener == null) {
+                buttonOk.setVisibility(View.GONE);
+            } else {
+                buttonOk.setVisibility(View.VISIBLE);
+                buttonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        okClicked = true;
+                        if (mOnPositiveButtonClickListener != null) {
+                            mOnPositiveButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, view);
+                        }
+                        close();
+                    }
+                });
 
-            if (mainColor != null) {
-                buttonOk.setTextColor(mainColor);
+                if (!TextUtils.isEmpty(mPositiveText)) {
+                    buttonOk.setText(mPositiveText);
+                }
+
+                if (buttonStyleResId > 0) {
+                    buttonOk.setTextAppearance(view.getContext(), buttonStyleResId);
+                }
+
+                if (mainColor != null) {
+                    buttonOk.setBackgroundColor(mainColor);
+                }
+            }
+        }
+
+        final TextView buttonCancel = (TextView) view.findViewById(R.id.buttonCancel);
+        if (buttonCancel != null) {
+            if (mNegativeText == null && mOnNegativeButtonClickListener == null) {
+                buttonCancel.setVisibility(View.GONE);
+            } else {
+                buttonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        okClicked = true;
+                        if (mOnNegativeButtonClickListener != null) {
+                            mOnNegativeButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, v);
+                        }
+                        close();
+                    }
+                });
+
+                if (!TextUtils.isEmpty(mNegativeText)) {
+                    buttonCancel.setText(mNegativeText);
+                }
+
+                if (buttonStyleResId > 0) {
+                    buttonCancel.setTextAppearance(view.getContext(), buttonStyleResId);
+                }
+
+                if (mainColor != null) {
+                    buttonCancel.setBackgroundColor(mainColor);
+                }
             }
         }
 
@@ -207,6 +263,19 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         return this;
     }
 
+    public SingleDateAndTimePickerDialog setPositiveButton(CharSequence text, int style, OnButtonClickListener listener) {
+        this.mPositiveText = text;
+        this.mOnPositiveButtonClickListener = listener;
+        this.buttonStyleResId = style;
+        return this;
+    }
+
+    public SingleDateAndTimePickerDialog setNegativeButton(CharSequence text, int style, OnButtonClickListener listener) {
+        this.mNegativeText = text;
+        this.mOnNegativeButtonClickListener = listener;
+        this.buttonStyleResId = style;
+        return this;
+    }
 
     @Override
     public void display() {
@@ -235,6 +304,10 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         void onDisplayed(SingleDateAndTimePicker picker);
     }
 
+    public interface OnButtonClickListener {
+        void onClick(SingleDateAndTimePickerDialog dialog, View button);
+    }
+
     public static class Builder {
         private final Context context;
         private SingleDateAndTimePickerDialog dialog;
@@ -243,6 +316,14 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         private Listener listener;
         @Nullable
         private DisplayListener displayListener;
+
+        private OnButtonClickListener mOnPositiveButtonClickListener;
+        private CharSequence mPositiveText;
+
+        private OnButtonClickListener mOnNegativeButtonClickListener;
+        private CharSequence mNegativeText;
+
+        private int buttonStyleResId = -1;
 
         @Nullable
         private String title;
@@ -330,6 +411,20 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
             return this;
         }
 
+        public Builder setPositiveButton(CharSequence text, int buttonStyleResId, OnButtonClickListener listener) {
+            this.mPositiveText = text;
+            this.mOnPositiveButtonClickListener = listener;
+            this.buttonStyleResId = buttonStyleResId;
+            return this;
+        }
+
+        public Builder setNegativeButton(CharSequence text, int buttonStyleResId, OnButtonClickListener listener) {
+            this.mNegativeText = text;
+            this.mOnNegativeButtonClickListener = listener;
+            this.buttonStyleResId = buttonStyleResId;
+            return this;
+        }
+
         public Builder displayListener(@Nullable DisplayListener displayListener) {
             this.displayListener = displayListener;
             return this;
@@ -389,7 +484,10 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     .setDisplayDays(displayDays)
                     .setDayFormatter(dayFormatter)
                     .setMustBeOnFuture(mustBeOnFuture)
-                    .setIsAmPm(isAmPm);
+                    .setIsAmPm(isAmPm)
+                    .setPositiveButton(mPositiveText, buttonStyleResId, mOnPositiveButtonClickListener)
+                    .setNegativeButton(mNegativeText, buttonStyleResId, mOnNegativeButtonClickListener)
+                    ;
 
             if (mainColor != null) {
                 dialog.setMainColor(mainColor);
