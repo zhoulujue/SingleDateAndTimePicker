@@ -23,7 +23,7 @@
             app:picker_curved="true"
             app:picker_cyclic="true"
             app:picker_selectedTextColor="@color/picker_button_background_selected"
-            app:picker_textSize="20sp"
+            app:picker_textSize="17sp"
             app:picker_visibleItemCount="7"
             />
 

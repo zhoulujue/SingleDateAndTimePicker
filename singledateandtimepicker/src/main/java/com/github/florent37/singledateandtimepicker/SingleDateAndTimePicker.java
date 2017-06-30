@@ -3,6 +3,8 @@ package com.github.florent37.singledateandtimepicker;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -58,6 +60,10 @@ public class SingleDateAndTimePicker extends LinearLayout {
 
     private boolean isAmPm;
     private int selectorHeight;
+
+    @ColorInt
+    @Nullable
+    protected Integer selectorHeightSetByCode = null;
 
     public SingleDateAndTimePicker(Context context) {
         this(context, null);
@@ -220,6 +226,24 @@ public class SingleDateAndTimePicker extends LinearLayout {
         }
     }
 
+    public void setSpinnerStyle(Integer spinnerTextColor, Integer spinnerTextSelectedColor, Integer spinnerSelectorColor, Integer spinnerSelectorHeight) {
+        if (spinnerTextColor != null) {
+            setTextColor(spinnerTextColor);
+        }
+        if (spinnerTextSelectedColor != null) {
+            setSelectedTextColor(spinnerTextSelectedColor);
+        }
+        if (spinnerSelectorColor != null) {
+            setSelectorColor(spinnerSelectorColor);
+        }
+        if (spinnerSelectorHeight != null) {
+            this.selectorHeightSetByCode = spinnerSelectorHeight;
+        }
+
+        updateViews();
+        updatePicker();
+    }
+
     public boolean isAmPm() {
         return isAmPm;
     }
@@ -269,6 +293,11 @@ public class SingleDateAndTimePicker extends LinearLayout {
         }
         if (daysPicker != null) {
             daysPicker.setVisibility(displayDays ? VISIBLE : GONE);
+        }
+        if (selectorHeightSetByCode != null) {
+            final ViewGroup.LayoutParams dtSelectorLayoutParams = dtSelector.getLayoutParams();
+            dtSelectorLayoutParams.height = selectorHeight;
+            dtSelector.setLayoutParams(dtSelectorLayoutParams);
         }
     }
 

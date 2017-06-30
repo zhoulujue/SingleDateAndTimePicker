@@ -28,6 +28,10 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
 
     private int buttonStyleResId;
 
+    @ColorInt
+    @Nullable
+    private Integer spinnerTextColor = null, spinnerTextSelectedColor = null, spinnerSelectorColor = null, spinnerSelectorHeight = null;
+
     private BottomSheetHelper bottomSheetHelper;
     private SingleDateAndTimePicker picker;
 
@@ -192,6 +196,8 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         picker.setDisplayMinutes(displayMinutes);
         picker.setDisplayHours(displayHours);
         picker.setIsAmPm(isAmPm);
+
+        picker.setSpinnerStyle(spinnerTextColor, spinnerTextSelectedColor, spinnerSelectorColor, spinnerSelectorHeight);
     }
 
     public SingleDateAndTimePickerDialog setListener(Listener listener) {
@@ -277,6 +283,14 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         return this;
     }
 
+    public SingleDateAndTimePickerDialog setSpinnerStyle(Integer spinnerTextColor, Integer spinnerTextSelectedColor, Integer spinnerSelectorColor, Integer spinnerSelectorHeight) {
+        this.spinnerTextColor = spinnerTextColor;
+        this.spinnerTextSelectedColor = spinnerTextSelectedColor;
+        this.spinnerSelectorColor = spinnerSelectorColor;
+        this.spinnerSelectorHeight = spinnerSelectorHeight;
+        return this;
+    }
+
     @Override
     public void display() {
         super.display();
@@ -351,6 +365,10 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         @ColorInt
         @Nullable
         private Integer titleTextColor = null;
+
+        @ColorInt
+        @Nullable
+        private Integer spinnerTextColor = null, spinnerTextSelectedColor = null, spinnerSelectorColor = null, spinnerSelectorHeight = null;
 
         @Nullable
         private Date minDate;
@@ -470,6 +488,14 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
             return this;
         }
 
+        public Builder setSpinnerStyle(Integer spinnerTextColor, Integer spinnerTextSelectedColor, Integer spinnerSelectorColor, Integer spinnerSelectorHeight) {
+            this.spinnerTextColor = spinnerTextColor;
+            this.spinnerTextSelectedColor = spinnerTextSelectedColor;
+            this.spinnerSelectorColor = spinnerSelectorColor;
+            this.spinnerSelectorHeight = spinnerSelectorHeight;
+            return this;
+        }
+
         public SingleDateAndTimePickerDialog build() {
             final SingleDateAndTimePickerDialog dialog = new SingleDateAndTimePickerDialog(context, bottomSheet)
                     .setTitle(title)
@@ -487,6 +513,7 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     .setIsAmPm(isAmPm)
                     .setPositiveButton(mPositiveText, buttonStyleResId, mOnPositiveButtonClickListener)
                     .setNegativeButton(mNegativeText, buttonStyleResId, mOnNegativeButtonClickListener)
+                    .setSpinnerStyle(spinnerTextColor, spinnerTextSelectedColor, spinnerSelectorColor, spinnerSelectorHeight)
                     ;
 
             if (mainColor != null) {
