@@ -81,7 +81,7 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     public void onClick(View view) {
                         okClicked = true;
                         if (mOnPositiveButtonClickListener != null) {
-                            mOnPositiveButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, view);
+                            mOnPositiveButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, view, picker.getDate());
                         }
                         close();
                     }
@@ -111,7 +111,7 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     public void onClick(View v) {
                         okClicked = true;
                         if (mOnNegativeButtonClickListener != null) {
-                            mOnNegativeButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, v);
+                            mOnNegativeButtonClickListener.onClick(SingleDateAndTimePickerDialog.this, v, picker.getDate());
                         }
                         close();
                     }
@@ -319,7 +319,7 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
     }
 
     public interface OnButtonClickListener {
-        void onClick(SingleDateAndTimePickerDialog dialog, View button);
+        void onClick(SingleDateAndTimePickerDialog dialog, View button, Date userPickedDate);
     }
 
     public static class Builder {
