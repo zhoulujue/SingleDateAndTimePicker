@@ -186,18 +186,18 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
             picker.setMaxDate(maxDate);
         }
 
-        if (defaultDate != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(defaultDate);
-            picker.selectDate(calendar);
-        }
-
         picker.setDisplayDays(displayDays);
         picker.setDisplayMinutes(displayMinutes);
         picker.setDisplayHours(displayHours);
         picker.setIsAmPm(isAmPm);
 
         picker.setSpinnerStyle(spinnerTextColor, spinnerTextSelectedColor, spinnerSelectorColor, spinnerSelectorHeight);
+
+        if (defaultDate != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(defaultDate);
+            picker.selectDate(calendar);
+        }
     }
 
     public SingleDateAndTimePickerDialog setListener(Listener listener) {
