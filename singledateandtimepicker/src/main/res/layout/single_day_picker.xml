@@ -19,6 +19,7 @@
             android:id="@+id/daysPicker"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:paddingRight="15dp"
             app:wheel_atmospheric="true"
             app:wheel_item_align="right"
             />
@@ -30,7 +31,7 @@
             app:wheel_atmospheric="true"
             app:wheel_item_align="center"
             app:wheel_visible_item_count="2"
-            android:paddingLeft="30dp"
+            android:paddingLeft="15dp"
             android:paddingRight="15dp"
             />
 
