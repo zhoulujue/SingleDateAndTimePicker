@@ -102,7 +102,7 @@ public class WheelHourPicker extends WheelPicker {
             instance.setTime((Date) value);
             valueItem = instance.get(Calendar.HOUR_OF_DAY);
         }
-        return String.format(getCurrentLocale(), FORMAT, valueItem);
+        return String.format(getCurrentLocale(), "%d", valueItem);
     }
 
     private void updateDefaultHour() {
