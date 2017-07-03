@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.github.florent37.singledateandtimepicker.widget.WheelMinutePicker;
 
@@ -78,4 +79,14 @@ public abstract class BaseDialog {
     protected void onClose() {
         this.isDisplaying = false;
     }
+
+    public interface UIListener {
+        void onOpen();
+
+        void onLoaded(View view);
+
+        void onClose();
+    }
+
+    protected UIListener mUIListener;
 }

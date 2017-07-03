@@ -28,6 +28,8 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
 
     private int buttonStyleResId;
 
+    private UIListener mUIListener;
+
     @ColorInt
     @Nullable
     private Integer spinnerTextColor = null, spinnerTextSelectedColor = null, spinnerSelectorColor = null, spinnerSelectorHeight = null;
@@ -52,16 +54,25 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         this.bottomSheetHelper.setListener(new BottomSheetHelper.Listener() {
             @Override
             public void onOpen() {
+                if (mUIListener != null) {
+                    mUIListener.onOpen();
+                }
             }
 
             @Override
             public void onLoaded(View view) {
                 init(view);
+                if (mUIListener != null) {
+                    mUIListener.onLoaded(view);
+                }
             }
 
             @Override
             public void onClose() {
                 SingleDateAndTimePickerDialog.this.onClose();
+                if (mUIListener != null) {
+                    mUIListener.onClose();
+                }
             }
         });
     }
@@ -291,6 +302,11 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         return this;
     }
 
+    public SingleDateAndTimePickerDialog setUIListener(UIListener uiListener) {
+        this.mUIListener = uiListener;
+        return this;
+    }
+
     @Override
     public void display() {
         super.display();
@@ -353,6 +369,8 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
         private boolean displayHours  = true;
 
         private boolean isAmPm = false;
+
+        private UIListener mUIListener;
 
         @ColorInt
         @Nullable
@@ -496,6 +514,11 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
             return this;
         }
 
+        public Builder setUIListener(UIListener listener) {
+            this.mUIListener = listener;
+            return this;
+        }
+
         public SingleDateAndTimePickerDialog build() {
             final SingleDateAndTimePickerDialog dialog = new SingleDateAndTimePickerDialog(context, bottomSheet)
                     .setTitle(title)
@@ -514,7 +537,7 @@ public class SingleDateAndTimePickerDialog extends BaseDialog {
                     .setPositiveButton(mPositiveText, buttonStyleResId, mOnPositiveButtonClickListener)
                     .setNegativeButton(mNegativeText, buttonStyleResId, mOnNegativeButtonClickListener)
                     .setSpinnerStyle(spinnerTextColor, spinnerTextSelectedColor, spinnerSelectorColor, spinnerSelectorHeight)
-                    ;
+                    .setUIListener(mUIListener);
 
             if (mainColor != null) {
                 dialog.setMainColor(mainColor);
