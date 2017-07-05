@@ -45,7 +45,7 @@ public class BottomSheetHelper {
           WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
               // Shrink the window to wrap the content rather than filling the screen
               WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
-              WindowManager.LayoutParams.TYPE_APPLICATION_PANEL,
+              WindowManager.LayoutParams.TYPE_APPLICATION,
               // Don't let it grab the input focus
               WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
               // Make the underlying application window visible through any transparent parts
